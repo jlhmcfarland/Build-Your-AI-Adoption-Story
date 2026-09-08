@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Build Your AI Adoption Story</title>
+  <style>
+    :root{
+      --navy:#17324d;
+      --blue:#235f9c;
+      --teal:#2a8b8b;
+      --purple:#6e5aa8;
+      --green:#4f8a64;
+      --ink:#1f2933;
+      --muted:#607080;
+      --line:#d8e0e8;
+      --bg:#f6f8fb;
+      --card:#ffffff;
+      --soft:#eef4f9;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+    }
+    .wrap{
+      max-width:980px;
+      margin:0 auto;
+      padding:36px 22px 48px;
+    }
+    .eyebrow{
+      color:var(--blue);
+      font-weight:700;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:13px;
+      margin-bottom:8px;
+    }
+    h1{
+      margin:0 0 8px;
+      font-size:38px;
+      line-height:1.1;
+      color:var(--navy);
+    }
+    .intro{
+      margin:0 0 24px;
+      color:var(--muted);
+      font-size:17px;
+      line-height:1.5;
+    }
+    .progress{
+      height:8px;
+      background:#e7edf3;
+      border-radius:999px;
+      overflow:hidden;
+      margin:0 0 24px;
+    }
+    .progress > div{
+      height:100%;
+      width:20%;
+      background:var(--blue);
+      transition:width .2s ease;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:28px;
+      box-shadow:0 10px 28px rgba(23,50,77,.06);
+    }
+    .step-kicker{
+      color:var(--blue);
+      font-weight:800;
+      text-transform:uppercase;
+      font-size:13px;
+      letter-spacing:.06em;
+    }
+    h2{
+      margin:8px 0 10px;
+      color:var(--navy);
+      font-size:28px;
+    }
+    .context{
+      background:var(--soft);
+      border-radius:12px;
+      padding:16px 18px;
+      color:#405365;
+      line-height:1.5;
+      margin-bottom:22px;
+    }
+    .question{
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .hint{
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:12px;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-bottom:16px;
+    }
+    .chip{
+      border:1px solid #c8d3df;
+      background:#fff;
+      color:#425466;
+      border-radius:999px;
+      padding:9px 13px;
+      font-size:14px;
+      cursor:pointer;
+    }
+    .chip.selected{
+      background:var(--blue);
+      color:#fff;
+      border-color:var(--blue);
+    }
+    .chip:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+    .custom-row{
+      display:flex;
+      gap:10px;
+      margin-top:4px;
+    }
+    input{
+      flex:1;
+      border:1px solid #bcc8d4;
+      border-radius:10px;
+      padding:12px 13px;
+      font-size:16px;
+      outline:none;
+    }
+    input:focus{
+      border-color:var(--blue);
+      box-shadow:0 0 0 3px rgba(35,95,156,.10);
+    }
+    button{
+      border:none;
+      border-radius:10px;
+      padding:11px 16px;
+      font-size:15px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .add{background:#e9eef4;color:var(--navy)}
+    .primary{background:var(--blue);color:#fff}
+    .secondary{background:#e9eef4;color:var(--navy)}
+    .nav{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:24px;
+    }
+    .count{
+      margin-top:10px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .story{
+      font-size:19px;
+      line-height:1.7;
+      background:#f9fbfd;
+      border-left:5px solid var(--teal);
+      border-radius:10px;
+      padding:20px;
+      margin-top:18px;
+    }
+    .blank{
+      font-weight:700;
+      color:var(--blue);
+    }
+    .hidden{display:none}
+    .result-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+    .status{
+      margin-top:10px;
+      color:var(--green);
+      font-size:13px;
+      min-height:18px;
+    }
+    .small{
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+      margin-top:14px;
+    }
+    @media(max-width:640px){
+      h1{font-size:31px}
+      .custom-row{flex-direction:column}
+      .nav{flex-direction:column-reverse}
+      .nav button{width:100%}
+    }
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <div class="eyebrow">AI Adoption Success: From Investment to Impact</div>
+  <h1>Build Your AI Adoption Story</h1>
+  <p class="intro">Answer five short questions to create a snapshot of where your organization is today and where you want AI to take you.</p>
+
+  <div class="progress"><div id="progressBar"></div></div>
+
+  <section id="wizardCard" class="card">
+    <div id="stepKicker" class="step-kicker"></div>
+    <h2 id="stepTitle"></h2>
+    <div id="context" class="context"></div>
+    <div id="question" class="question"></div>
+    <div class="hint">Choose up to 3, or add your own.</div>
+    <div id="chips" class="chips"></div>
+
+    <div class="custom-row">
+      <input id="customInput" placeholder="Type your own answer" />
+      <button id="addCustom" class="add">Add</button>
+    </div>
+    <div id="count" class="count"></div>
+
+    <div class="nav">
+      <button id="backBtn" class="secondary">Back</button>
+      <button id="nextBtn" class="primary">Next</button>
+    </div>
+  </section>
+
+  <section id="resultCard" class="card hidden">
+    <div class="step-kicker">Your Results</div>
+    <h2>Your AI Adoption Story</h2>
+    <p class="intro" style="margin-bottom:0">You’ve just described the gap between where your organization is today and the value you want AI to create.</p>
+    <div id="story" class="story"></div>
+
+    <div class="result-actions">
+      <button id="copyBtn" class="primary">Copy Story</button>
+      <button id="restartBtn" class="secondary">Start Over</button>
+    </div>
+    <div id="status" class="status"></div>
+    <div class="small">Your answers remain in your browser unless this experience is later connected to a website form or email service.</div>
+  </section>
+</main>
+
+<script>
+const steps = [
+  {
+    title:"State of AI Adoption",
+    context:"AI adoption rarely moves in a straight line. Some organizations are still exploring, while others are piloting, scaling, or struggling to turn isolated wins into broader impact.",
+    question:"Where is your organization with AI adoption today?",
+    options:["Exploring","Experimenting","Piloting","Early adoption","Isolated quick wins","Gaining traction","Scaling","Struggling to scale","Stalled","Mature"]
+  },
+  {
+    title:"Symptom of Reactive AI Adoption",
+    context:"Many organizations invest in AI tools before aligning leaders, building role-relevant skills, reinforcing behaviors, or defining how value will be measured. The result can be activity without sustained adoption.",
+    question:"What AI adoption challenges are you experiencing today?",
+    options:["Tools first","Ad hoc training","Low adoption","Inconsistent usage","Skills gaps","Lack of clear use cases","Difficulty proving value","Isolated success","Early excitement fading","No clear strategy"]
+  },
+  {
+    title:"Desired AI Outcome",
+    context:"Organizations may begin with pressure for quick productivity gains, but long-term value often requires deeper workforce capability and, eventually, broader organizational transformation.",
+    question:"Which AI outcomes matter most to your organization right now?",
+    options:["Quick wins","Productivity gains","Workforce capability","Behavior change","Organizational transformation","Measurable business value"]
+  },
+  {
+    title:"Shift Needed to Reach Desired AI Outcome",
+    context:"The gap between AI investment and AI impact is often not the technology itself. Progress may depend on changes in skills, behaviors, leadership alignment, confidence, use cases, reinforcement, or measurement.",
+    question:"What needs to change to reach your desired AI outcome?",
+    options:["Skills","Behaviors","Mindset","Leadership alignment","Confidence","Role-relevant use cases","Measurement","Reinforcement","Ways of working"]
+  },
+  {
+    title:"Meaning of Success",
+    context:"The most useful AI outcomes are tied to real business or workforce value. Think beyond adoption itself and consider what successful adoption would make possible for your organization.",
+    question:"What would achieving those outcomes mean for your organization?",
+    options:["More time for meaningful work","Greater productivity","Faster delivery","Better decisions","More innovation","Measurable ROI","Greater capacity","A more capable workforce"]
+  }
+];
+
+let current = 0;
+const selections = steps.map(() => []);
+
+const stepKicker = document.getElementById("stepKicker");
+const stepTitle = document.getElementById("stepTitle");
+const context = document.getElementById("context");
+const question = document.getElementById("question");
+const chips = document.getElementById("chips");
+const customInput = document.getElementById("customInput");
+const count = document.getElementById("count");
+const backBtn = document.getElementById("backBtn");
+const nextBtn = document.getElementById("nextBtn");
+const progressBar = document.getElementById("progressBar");
+
+function renderStep(){
+  const s = steps[current];
+  stepKicker.textContent = `Step ${current+1} of ${steps.length}`;
+  stepTitle.textContent = s.title;
+  context.textContent = s.context;
+  question.textContent = s.question;
+  customInput.value = "";
+  progressBar.style.width = `${((current+1)/steps.length)*100}%`;
+
+  chips.innerHTML = "";
+  s.options.forEach(opt => {
+    const b = document.createElement("button");
+    b.className = "chip";
+    b.textContent = opt;
+    if(selections[current].includes(opt)) b.classList.add("selected");
+    if(selections[current].length >= 3 && !selections[current].includes(opt)) b.disabled = true;
+    b.onclick = () => toggleSelection(opt);
+    chips.appendChild(b);
+  });
+
+  count.textContent = `${selections[current].length} of 3 selected`;
+  backBtn.style.visibility = current === 0 ? "hidden" : "visible";
+  nextBtn.textContent = current === steps.length-1 ? "Build My Story" : "Next";
+}
+
+function toggleSelection(opt){
+  const arr = selections[current];
+  const i = arr.indexOf(opt);
+  if(i >= 0) arr.splice(i,1);
+  else if(arr.length < 3) arr.push(opt);
+  renderStep();
+}
+
+document.getElementById("addCustom").onclick = () => {
+  const val = customInput.value.trim();
+  if(!val) return;
+  if(selections[current].length >= 3){
+    alert("You can select up to 3 answers for each question.");
+    return;
+  }
+  if(!selections[current].includes(val)) selections[current].push(val);
+  customInput.value = "";
+  renderStep();
+};
+
+customInput.addEventListener("keydown", e => {
+  if(e.key === "Enter"){
+    e.preventDefault();
+    document.getElementById("addCustom").click();
+  }
+});
+
+backBtn.onclick = () => {
+  if(current > 0){ current--; renderStep(); }
+};
+
+nextBtn.onclick = () => {
+  if(current < steps.length-1){
+    current++;
+    renderStep();
+  }else{
+    showResults();
+  }
+};
+
+function formatList(arr, placeholder){
+  if(!arr.length) return `[${placeholder}]`;
+  if(arr.length === 1) return arr[0];
+  if(arr.length === 2) return `${arr[0]} and ${arr[1]}`;
+  return `${arr[0]}, ${arr[1]}, and ${arr[2]}`;
+}
+
+function storyText(){
+  return `When it comes to AI adoption, our organization is currently ${formatList(selections[0],"STATE OF AI ADOPTION")}. ` +
+    `Some of the biggest challenges we’re experiencing are ${formatList(selections[1],"SYMPTOMS OF REACTIVE AI ADOPTION")}. ` +
+    `What we want to achieve is ${formatList(selections[2],"DESIRED AI OUTCOMES")}. ` +
+    `To get there, we need to strengthen ${formatList(selections[3],"SHIFTS NEEDED")}. ` +
+    `If we succeed, it would mean ${formatList(selections[4],"MEANING OF SUCCESS")}.`;
+}
+
+function showResults(){
+  document.getElementById("wizardCard").classList.add("hidden");
+  document.getElementById("resultCard").classList.remove("hidden");
+  progressBar.style.width = "100%";
+  document.getElementById("story").textContent = storyText();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+async function copyStory(){
+  const text = storyText();
+  const status = document.getElementById("status");
+
+  // Modern Clipboard API works on HTTPS/localhost in supported browsers.
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      await navigator.clipboard.writeText(text);
+      status.textContent = "Copied to clipboard.";
+      return;
+    } catch (e) {
+      // Continue to fallback below.
+    }
+  }
+
+  // Fallback for local HTML files and browsers that block navigator.clipboard.
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.top = "-9999px";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  textarea.setSelectionRange(0, textarea.value.length);
+
+  try {
+    const successful = document.execCommand("copy");
+    if (!successful) throw new Error("copy command failed");
+    status.textContent = "Copied to clipboard.";
+  } catch (e) {
+    // Last-resort UX: visibly select the story so Ctrl/Cmd+C works immediately.
+    const story = document.getElementById("story");
+    const range = document.createRange();
+    range.selectNodeContents(story);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    status.textContent = "Story selected. Press Ctrl+C (Windows) or Command+C (Mac) to copy.";
+  } finally {
+    document.body.removeChild(textarea);
+  }
+}
+
+document.getElementById("copyBtn").onclick = copyStory;
+
+document.getElementById("restartBtn").onclick = () => {
+  for(let i=0;i<selections.length;i++) selections[i] = [];
+  current = 0;
+  document.getElementById("resultCard").classList.add("hidden");
+  document.getElementById("wizardCard").classList.remove("hidden");
+  document.getElementById("status").textContent = "";
+  renderStep();
+};
+
+renderStep();
+</script>
+</body>
+</html>
