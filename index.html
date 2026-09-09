@@ -305,7 +305,7 @@
     </div>
 
     <div class="nav">
-      <button id="backBtn" class="secondary">Back</button>
+      <button id="backBtn" class="secondary">Go Back</button>
       <button id="nextBtn" class="primary">Next</button>
     </div>
   </section>
@@ -318,6 +318,7 @@
 
     <div class="result-actions">
       <button id="copyBtn" class="primary">Copy Story</button>
+      <button id="resultBackBtn" class="secondary">Go Back</button>
       <button id="restartBtn" class="secondary">Start Over</button>
     </div>
     <div id="status" class="status"></div>
@@ -619,6 +620,14 @@ async function copyStory(){
 }
 
 document.getElementById("copyBtn").onclick = copyStory;
+
+document.getElementById("resultBackBtn").onclick = () => {
+  document.getElementById("resultCard").classList.add("hidden");
+  document.getElementById("wizardCard").classList.remove("hidden");
+  current = steps.length - 1;
+  renderStep();
+  window.scrollTo({top:0, behavior:"smooth"});
+};
 
 document.getElementById("restartBtn").onclick = () => {
   selections = steps.map(() => []);
