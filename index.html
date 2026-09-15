@@ -260,6 +260,45 @@
       color:var(--green);
     }
 
+
+    .email-box{
+      margin-top:20px;
+      padding:20px;
+      border:1px solid #d6e5f0;
+      border-radius:14px;
+      background:#ffffff;
+    }
+    .email-box h3{
+      margin:0 0 8px;
+      color:var(--navy);
+      font-size:20px;
+    }
+    .email-box p{
+      margin:0 0 14px;
+      color:#4b5f70;
+      line-height:1.5;
+    }
+    .email-row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .email-row input{
+      min-width:260px;
+    }
+    .email-cta{
+      background:var(--blue);
+      color:#fff;
+      white-space:nowrap;
+    }
+    .email-note{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.4;
+    }
+
     @media(max-width:640px){
       h1{font-size:31px}
       .custom-row{flex-direction:column}
@@ -305,7 +344,7 @@
     </div>
 
     <div class="nav">
-      <button id="backBtn" class="secondary">Go Back</button>
+      <button id="backBtn" class="secondary">Back</button>
       <button id="nextBtn" class="primary">Next</button>
     </div>
   </section>
@@ -318,21 +357,31 @@
 
     <div class="result-actions">
       <button id="copyBtn" class="primary">Copy Story</button>
-      <button id="resultBackBtn" class="secondary">Go Back</button>
       <button id="restartBtn" class="secondary">Start Over</button>
     </div>
     <div id="status" class="status"></div>
 
+    <div class="email-box">
+      <h3>Keep your AI Adoption Story</h3>
+      <p>Email a copy of your story to yourself and Learning Tree so you can continue the conversation after the session.</p>
+      <div class="email-row">
+        <input id="emailInput" type="email" placeholder="Your work email" aria-label="Your work email" />
+        <button id="emailStoryBtn" class="email-cta">Email My Story</button>
+      </div>
+      <div id="emailStatus" class="status"></div>
+      <div class="email-note">This opens a draft in your email app. Nothing is sent until you choose Send. Learning Tree will be copied on the message.</div>
+    </div>
+
     <div class="cta-box">
       <h3>Turn your AI adoption story into a plan.</h3>
-      <p>Explore Learning Tree’s AI Adoption Framework to see how organizations can align leaders, activate role-based learning, reinforce new behaviors, and prove measurable value.</p>
+      <p>Your story is the starting point. Explore Learning Tree’s AI Adoption Framework to see how we can help you align leaders, activate role-based learning, reinforce new behaviors, and prove measurable value.</p>
       <a class="cta"
          href="https://www.learningtree.com/ai-workforce-solutions/"
          target="_blank"
          rel="noopener noreferrer">Explore the AI Adoption Framework</a>
     </div>
 
-    <div class="small">Your answers remain in your browser unless this experience is later connected to a website form or email service.</div>
+    <div class="small">Your answers are not saved. Email your story to yourself if you’d like to keep a copy.</div>
   </section>
 </main>
 
@@ -621,12 +670,37 @@ async function copyStory(){
 
 document.getElementById("copyBtn").onclick = copyStory;
 
-document.getElementById("resultBackBtn").onclick = () => {
-  document.getElementById("resultCard").classList.add("hidden");
-  document.getElementById("wizardCard").classList.remove("hidden");
-  current = steps.length - 1;
-  renderStep();
-  window.scrollTo({top:0, behavior:"smooth"});
+
+document.getElementById("emailStoryBtn").onclick = () => {
+  const emailInput = document.getElementById("emailInput");
+  const emailStatus = document.getElementById("emailStatus");
+  const userEmail = emailInput.value.trim();
+
+  if(!userEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userEmail)){
+    emailStatus.textContent = "Enter a valid email address first.";
+    emailInput.focus();
+    return;
+  }
+
+  const subject = "My AI Adoption Story";
+  const body =
+`Here is my AI Adoption Story:
+
+${storyText()}
+
+Explore Learning Tree's AI Adoption Framework:
+https://www.learningtree.com/ai-workforce-solutions/
+
+I'd like to continue the conversation about our AI adoption goals.`;
+
+  const mailto =
+    `mailto:${encodeURIComponent(userEmail)}` +
+    `?cc=${encodeURIComponent("jennifer_mcfarland@learningtree.com,Jonathan_Gilbert@LearningTree.com")}` +
+    `&subject=${encodeURIComponent(subject)}` +
+    `&body=${encodeURIComponent(body)}`;
+
+  emailStatus.textContent = "Opening your email app...";
+  window.location.href = mailto;
 };
 
 document.getElementById("restartBtn").onclick = () => {
